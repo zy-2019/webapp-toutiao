@@ -13,13 +13,19 @@
             placeholder="请输入手机号"
         />
 <!-- ------------------------------------------------------------------------------- -->
-        <van-field
+          <van-field
             v-model="user.code"
             label="验证码"
             placeholder="请输入验证码"
             required
         >
-        <van-button slot="button" size="small" type="primary">发送验证码</van-button>
+          <van-count-down
+          v-if="isCountDownShow"
+          slot="button"
+          :time="6000 * 10"
+          format="ss s"
+          @finish='isCountDownShow = false'/>
+          <van-button v-else slot="button" size="small" type="primary" round @click="openCountDown">发送验证码</van-button>
         </van-field>
 
     </van-cell-group>
@@ -37,6 +43,7 @@ import { login } from '../../api/user'
 export default {
   data () {
     return {
+      isCountDownShow: false,
       user: {
         mobile: '',
         code: ''
@@ -44,6 +51,11 @@ export default {
     }
   },
   methods: {
+
+    // 点击发送验证码显示倒计时
+    openCountDown () {
+      this.isCountDownShow = true
+    },
     async submitMsg () {
       const user = this.user // 获取表单数据
       this.$toast.loading({
