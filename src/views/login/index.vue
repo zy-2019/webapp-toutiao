@@ -80,13 +80,20 @@ export default {
       const user = this.user // 获取表单数据
 
       // 表单验证
-      const success = await this.$refs.form.validate()
+      const success = await this.$refs.myForm.validate()
 
       if (!success) {
-        return
+        setTimeout(() => {
+          const errors = this.$refs.myForm.errors
+
+          const item = Object.values(errors).find(item => {
+            return item[0]
+          })
+          this.$toast(item[0])
+        }, 100)
       }
 
-      // 表单验证通过 开始转圈圈
+      // 表单验证通过 开始转loading加载
       this.$toast.loading({
         message: '登录中...',
         forbidClick: true,
