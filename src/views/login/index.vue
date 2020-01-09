@@ -5,15 +5,15 @@
         title="标题"
     />
 <!-- ---------------------------------------------------------------------------- -->
-    <ValidationObserver>
-      <ValidationProvider name='手机号' rules='required|length:4' v-slot='{errors}'>
+    <ValidationObserver ref="myForm">
+      <ValidationProvider name='手机号' rules='required' >
         <van-field
             v-model="user.mobile"
             required
             label="手机号"
             placeholder="请输入手机号"
         />
-        <span>{{ errors[0] }}</span>
+        <!-- <span>{{ errors[0] }}</span> -->
       </ValidationProvider>
 <!-- ------------------------------------------------------------------------------- -->
       <ValidationProvider name='验证码' rules='required'>
@@ -78,6 +78,15 @@ export default {
     },
     async submitMsg () {
       const user = this.user // 获取表单数据
+
+      // 表单验证
+      const success = await this.$refs.form.validate()
+
+      if (!success) {
+        return
+      }
+
+      // 表单验证通过 开始转圈圈
       this.$toast.loading({
         message: '登录中...',
         forbidClick: true,
