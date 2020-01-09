@@ -5,14 +5,18 @@
         title="标题"
     />
 <!-- ---------------------------------------------------------------------------- -->
-    <van-cell-group>
+    <ValidationObserver>
+      <ValidationProvider name='手机号' rules='required|length:4' v-slot='{errors}'>
         <van-field
             v-model="user.mobile"
             required
             label="手机号"
             placeholder="请输入手机号"
         />
+        <span>{{ errors[0] }}</span>
+      </ValidationProvider>
 <!-- ------------------------------------------------------------------------------- -->
+      <ValidationProvider name='验证码' rules='required'>
           <van-field
             v-model="user.code"
             label="验证码"
@@ -27,8 +31,8 @@
           @finish='isCountDownShow = false'/>
           <van-button v-else slot="button" size="small" type="primary" round @click="openCountDown">发送验证码</van-button>
         </van-field>
-
-    </van-cell-group>
+      </ValidationProvider>
+    </ValidationObserver>
 
     <!-- ----------------------------------------------------------------------------- -->
     <div class="btn-container">
@@ -39,7 +43,7 @@
 </template>
 
 <script>
-import { login } from '../../api/user'
+import { login, getSmsCode } from '../../api/user'
 export default {
   data () {
     return {
@@ -53,8 +57,24 @@ export default {
   methods: {
 
     // 点击发送验证码显示倒计时
-    openCountDown () {
-      this.isCountDownShow = true
+    async  openCountDown () {
+      // 1.获取手机号
+      const { mobile } = this.user // 解构赋值
+      // let mobile = this.user.mobile // 普通方法
+      try {
+        this.isCountDownShow = true // 显示倒计时
+        await getSmsCode(mobile) // 发送
+      } catch (err) {
+        console.log(err)
+        this.isCountDownShow = false // 发送失败 关闭倒计时
+
+        // 频繁发送会报429所以要判断一下   其他的直接提示
+        if (err.response.status === 429) {
+          this.$toast('请务频繁操作')
+          return
+        }
+        this.$toast('发送失败')
+      }
     },
     async submitMsg () {
       const user = this.user // 获取表单数据

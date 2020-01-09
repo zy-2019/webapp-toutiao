@@ -7,6 +7,7 @@ import './utils/register-vant'
 
 import './styles/index.less'
 
+import './utils/validation.js'
 Vue.config.productionTip = false
 
 new Vue({
