@@ -6,7 +6,7 @@
     />
 <!-- ---------------------------------------------------------------------------- -->
     <ValidationObserver ref="myForm">
-      <ValidationProvider name='手机号' rules='required' >
+      <ValidationProvider name='手机号' rules='required|mobile' >
         <van-field
             v-model="user.mobile"
             required
@@ -16,7 +16,7 @@
         <!-- <span>{{ errors[0] }}</span> -->
       </ValidationProvider>
 <!-- ------------------------------------------------------------------------------- -->
-      <ValidationProvider name='验证码' rules='required'>
+      <ValidationProvider name='验证码' rules='required|code'>
           <van-field
             v-model="user.code"
             label="验证码"
