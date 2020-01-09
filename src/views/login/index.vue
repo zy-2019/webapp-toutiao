@@ -44,6 +44,8 @@
 
 <script>
 import { login, getSmsCode } from '../../api/user'
+
+import { validate } from 'vee-validate'
 export default {
   data () {
     return {
@@ -61,9 +63,23 @@ export default {
       // 1.获取手机号
       const { mobile } = this.user // 解构赋值
       // let mobile = this.user.mobile // 普通方法
+
+      // 检验手机号是否有效
+      // 参数1：要验证的数据
+      // 参数2：验证规则
+      // 参数3：一个可选的配置对象，例如配置错误消息的字段名称  name
+      // 返回值：{ valid 验证是否成功  errors 一个数组 错误提示消息 ...}
+      const validateResult = await validate(mobile, 'required|mobile', {
+        name: '手机号'
+      })
+
+      if (!validateResult.valid) {
+        this.$toast(validateResult.errors[0])
+        return
+      }
       try {
         this.isCountDownShow = true // 显示倒计时
-        await getSmsCode(mobile) // 发送
+        await getSmsCode(mobile) // 发送验证码
       } catch (err) {
         console.log(err)
         this.isCountDownShow = false // 发送失败 关闭倒计时
