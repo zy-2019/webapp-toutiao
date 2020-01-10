@@ -15,7 +15,9 @@ import {
   Image,
   GridItem,
   Icon,
-  Dialog
+  Dialog,
+  Tab,
+  Tabs
 } from 'vant'
 //
 Vue
@@ -33,3 +35,5 @@ Vue
   .use(Image)
   .use(Icon)
   .use(Dialog)
+  .use(Tabs)
+  .use(Tab)
