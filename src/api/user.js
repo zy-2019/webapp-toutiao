@@ -16,3 +16,11 @@ export const getSmsCode = mobile => {
     method: 'get'
   })
 }
+
+// 获取用户自己的信息
+export const getUserInfo = () => {
+  return request({
+    url: '/app/v1_0/user',
+    method: 'get'
+  })
+}

@@ -1,35 +1,36 @@
 <template>
   <div class="my-container">
     <!-- 已登录：用户信息 -->
-    <div v-if="$store.state.user" class="user-info-wrap">
+    <div v-if="$store.state.user"
+     class="user-info-wrap">
       <div class="base-info-wrap">
         <div class="avatar-title-wrap">
           <van-image
             class="avatar"
             round
             fit="cover"
-            src="https://img.yzcdn.cn/vant/cat.jpeg"
+            :src="list.photo"
           />
-          <div class="title">黑马程序员</div>
+          <div class="title">{{list.name}}</div>
         </div>
         <van-button round size="mini">编辑资料</van-button>
       </div>
       <van-grid class="data-info" :border="false">
         <van-grid-item>
           <span class="count">123</span>
-          <span class="text">头条</span>
+          <span class="text">{{list.art_count}}</span>
         </van-grid-item>
         <van-grid-item>
           <span class="count">123</span>
-          <span class="text">关注</span>
+          <span class="text">{{list.follow_count}}</span>
         </van-grid-item>
         <van-grid-item>
           <span class="count">123</span>
-          <span class="text">粉丝</span>
+          <span class="text">{{list.fans_count}}</span>
         </van-grid-item>
         <van-grid-item>
           <span class="count">123</span>
-          <span class="text">获赞</span>
+          <span class="text">{{list.like_count}}</span>
         </van-grid-item>
       </van-grid>
     </div>
@@ -60,31 +61,58 @@
       <van-cell title="小智同学" is-link />
     </van-cell-group>
 
-    <van-cell-group v-if="$store.state.user">
+    <van-cell-group v-if="$store.state.user" @click="logOut">
       <van-cell
         style="text-align: center;"
         title="退出登录"
         clickable
       />
     </van-cell-group>
-    <!-- /其它 -->
   </div>
 </template>
 
 <script>
+// import { Dialog } from 'vant'
+import { getUserInfo } from '../../api/user'
 export default {
   name: 'MyPage',
   components: {},
   props: {},
   data () {
-    return {}
+    return {
+      list: {}
+    }
   },
   computed: {},
   watch: {},
-  created () {},
+  created () {
+    // 此处判断 用户登录了才可以获取用户的信息
+    if (this.$store.state.user) {
+      this.userInfo()
+    }
+  },
   mounted () {},
   methods: {
 
+    // 退出登录
+    logOut () {
+      this.$dialog.confirm({
+        title: '标题',
+        message: '弹窗内容'
+      }).then(() => {
+        // 清除登录信息
+        this.$store.commit('setUser', null)
+      }).catch(() => {
+        this.$toast('取消')
+      })
+    },
+
+    // 请求用户信息
+    async userInfo () {
+      let res = await getUserInfo() // 此处可以直接解构赋值  少写一个data
+      console.log(res)
+      this.list = res.data.data
+    }
   }
 }
 </script>

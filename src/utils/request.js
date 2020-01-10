@@ -19,7 +19,7 @@ request.defaults.transformResponse = [function (data) {
 }]
 
 // 请求拦截器   拿到token放进去
-axios.interceptors.request.use(function (config) {
+request.interceptors.request.use(function (config) {
   // 统一设置token
   const { user } = store.state
   if (user) {
