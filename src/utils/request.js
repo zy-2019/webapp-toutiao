@@ -3,6 +3,8 @@
 
 import axios from 'axios'
 import jsonBig from 'json-bigint'
+
+import store from '@/store'
 const request = axios.create({
   baseURL: 'http://ttapi.research.itcast.cn/' // 基础路径
 })
@@ -16,4 +18,15 @@ request.defaults.transformResponse = [function (data) {
   }
 }]
 
+// 请求拦截器   拿到token放进去
+axios.interceptors.request.use(function (config) {
+  // 统一设置token
+  const { user } = store.state
+  if (user) {
+    config.headers.Authorization = `Bearer ${user.token}`
+  }
+  return config
+}, function (error) {
+  return Promise.reject(error)
+})
 export default request
