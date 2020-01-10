@@ -5,7 +5,7 @@ export const getItem = name => {
   const data = window.localStorage.getItem(name)
 
   try {
-    //   尝试把data转为JavaScript对象
+    // 尝试把data转为JavaScript对象
     // 如果转换成功 一定意味着数据是一个json格式的字符串
     // 如果data不是json格式字符串 那就失败 进入catch 返回原数据
     return JSON.parse(data)

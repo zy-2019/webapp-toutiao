@@ -29,4 +29,6 @@ axios.interceptors.request.use(function (config) {
 }, function (error) {
   return Promise.reject(error)
 })
+
+// 响应拦截器
 export default request
