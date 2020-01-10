@@ -109,7 +109,7 @@ export default {
         }, 100)
       }
 
-      // 表单验证通过 开始转loading加载
+      // 表单验证通过 开始loading加载
       this.$toast.loading({
         message: '登录中...',
         forbidClick: true,
@@ -124,6 +124,8 @@ export default {
         this.$store.commit('setUser', res.data.data)
         // 提示success 或者 fail的时候，会把其他的toast先清除
         this.$toast.success('登录成功')
+
+        this.$router.push('/') // 跳转主页
       } catch (err) {
         console.log('提交失败', err)
         this.$toast.success('登录失败')
