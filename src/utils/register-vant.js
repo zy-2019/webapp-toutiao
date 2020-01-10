@@ -17,7 +17,9 @@ import {
   Icon,
   Dialog,
   Tab,
-  Tabs
+  Tabs,
+  List,
+  PullRefresh
 } from 'vant'
 //
 Vue
@@ -37,3 +39,5 @@ Vue
   .use(Dialog)
   .use(Tabs)
   .use(Tab)
+  .use(List)
+  .use(PullRefresh)
