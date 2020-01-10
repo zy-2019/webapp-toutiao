@@ -10,7 +10,11 @@ import {
   Toast,
   CountDown,
   Tabbar,
-  TabbarItem
+  TabbarItem,
+  Grid,
+  Image,
+  GridItem,
+  Icon
 } from 'vant'
 //
 Vue
@@ -23,3 +27,7 @@ Vue
   .use(CountDown)
   .use(Tabbar)
   .use(TabbarItem)
+  .use(Grid)
+  .use(GridItem)
+  .use(Image)
+  .use(Icon)

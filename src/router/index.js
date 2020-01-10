@@ -32,9 +32,9 @@ const routes = [
         component: () => import('../views/video')
       },
       {
-        path: '/user',
-        name: 'user',
-        component: () => import('../views/user')
+        path: '/my',
+        name: 'my',
+        component: () => import('../views/my')
       }
 
     ]
