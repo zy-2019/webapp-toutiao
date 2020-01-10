@@ -117,7 +117,12 @@ export default {
       })
       try {
         let res = await login(user) // 请求提交
+
+        // 返回的res里面就有token refresh_token
         console.log('登录成功', res)
+
+        this.$store.commit('setUser', res.data.data)
+        // 提示success 或者 fail的时候，会把其他的toast先清除
         this.$toast.success('登录成功')
       } catch (err) {
         console.log('提交失败', err)
