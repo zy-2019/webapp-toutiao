@@ -10,7 +10,7 @@
 
         <van-cell title="推荐频道" :border='false'/>
         <van-grid :gutter="10">
-            <van-grid-item v-for="item in ResidueChannels" :key="item.id" :text="item.name"/>
+            <van-grid-item @click="ChannelAdd(item)"  v-for="item in ResidueChannels" :key="item.id" :text="item.name"/>
         </van-grid>
     </div>
 
@@ -54,6 +54,11 @@ export default {
     }
   },
   methods: {
+
+    // 点击推荐频道追加到我的频道中
+    ChannelAdd (channel) {
+      this.myChannels.push(channel)
+    },
 
     // 全部频道列表
     async getAllChannels () {
