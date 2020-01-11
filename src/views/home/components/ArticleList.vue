@@ -13,22 +13,30 @@
           @load="onLoad"
           >
           <van-cell
-            v-for="item in list"
-            :key="item"
-            :title="item"
+            v-for="(item,index) in list"
+            :key="index"
+            :title="item.title"
           />
         </van-list>
     </van-pull-refresh>
 </template>
 
 <script>
+import { getArticles } from '../../../api/article'
 export default {
   data () {
     return {
       isLoading: false,
       list: [], // 列表数据
-      loading: false,
-      finished: false
+      loading: false, // 上拉加载更多的loading状态
+      finished: false, // 数据是否加载完毕
+      timestamp: null // 用于获取下一页的时间戳
+    }
+  },
+  props: {
+    channel: {
+      type: Object,
+      required: true
     }
   },
   methods: {
@@ -40,30 +48,51 @@ export default {
       }, 500)
     },
 
-    // 上拉加载更多数据
-    onLoad () {
-      // 1.请求获取数据
-      // 异步更新数据
-      setTimeout(() => {
-        // 2.把请求获取到的数据添加到数组列表中
-        for (let i = 0; i < 10; i++) {
-          this.list.push(this.list.length + 1)
-        }
-        // 加载状态结束
-        this.loading = false
+    async onLoad () {
+      // 1.获取数据
+      let res = await getArticles({
 
-        // 数据全部加载完成
-        if (this.list.length >= 40) {
-          this.finished = true
-        }
-      }, 500)
+        channel_id: this.channel.id,
+        // 第1次使用 Date.now() 获取最新数据
+        // 下一页的数据使用本次返回的数据中的 timestamp
+        // 时间戳，请求新的推荐数据传当前的时间戳，请求历史推荐传指定的时间戳
+        timestamp: this.timestamp || Date.now(),
+        with_top: 1
+      })
+      // console.log(res)
+
+      // 2.把请求获取到的数据添加到数组列表中
+      const results = res.data.data.results
+      this.list.push(...results)
+
+      // 3.加载状态结束
+      this.loading = false
+
+      // 4.数据全部加载完成
+      if (results.length) {
+        this.timestamp = res.data.data.pre_timestamp
+      } else {
+        this.finished = true
+      }
     }
-  },
-  props: {
-    channel: {
-      type: Object,
-      required: true
-    }
+    // 上拉加载更多数据
+    // onLoad () {
+    //   // 1.请求获取数据
+
+    //   setTimeout(() => {
+    //     // 2.把请求获取到的数据添加到数组列表中
+    //     for (let i = 0; i < 10; i++) {
+    //       this.list.push(this.list.length + 1)
+    //     }
+    //     // 3.加载状态结束
+    //     this.loading = false
+
+    //     // 4.数据全部加载完成
+    //     if (this.list.length >= 40) {
+    //       this.finished = true
+    //     }
+    //   }, 500)
+    // }
   }
 }
 </script>

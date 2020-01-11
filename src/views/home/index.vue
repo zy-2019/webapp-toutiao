@@ -75,7 +75,7 @@ export default {
     // },
     async UserChannels () {
       let res = await getUserChannels()
-      console.log(res)
+      // console.log(res)
       this.channels = res.data.data.channels
     }
   },
