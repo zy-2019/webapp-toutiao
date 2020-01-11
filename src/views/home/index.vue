@@ -1,49 +1,50 @@
 <template>
-  <div>
+  <div class="home-container">
     <!-- 导航栏 -->
-    <van-nav-bar title="首页" />
+    <van-nav-bar title="首页" fixed />
     <!-- 频道列表 -->
     <van-tabs v-model="active">
+      <!-- 面包菜单图标 -->
+      <van-icon @click="isChannelEditShow = true" name="wap-nav" slot="nav-right" class="wap-nav"/>
+          <!-- 频道列表 -->
       <van-tab :title="item.name" v-for="item in channels" :key="item.id">
 
-          <!-- 列表 -->
-        <!-- <van-pull-refresh v-model="isLoading" @refresh="onRefresh"> -->
-          <ArticleList :channel='item'></ArticleList>
-          <!-- list 列表组件
-          v-model="loading" 控制上拉加载更多的 loading 状态
-          :finished="finished" 控制是否加载结束，如果没有数据 则不会继续加载更多
-          finished-text="没有更多了" 配置结束结果的提示文本
-          @load="onLoad" 当快要触底的时候 他会自动触发执行该方法
-          在onload函数中请求 获取数据-->
-          <!-- <van-list
-          v-model="loading"
-          :finished="finished"
-          finished-text="没有更多了"
-          @load="onLoad"
-          >
-          <van-cell
-            v-for="item in list"
-            :key="item"
-            :title="item"
-          />
-        </van-list>
-      </van-pull-refresh> -->
+        <!-- 文章列表的组件就要在对应的频道下面 -->
+        <ArticleList :channel='item'></ArticleList>
+
       </van-tab>
     </van-tabs>
+    <!-- 频道编辑 -->
+
+    <!-- 频道弹层组件 -->
+    <van-popup
+      v-model="isChannelEditShow"
+      position="bottom"
+      round
+      closeable
+      close-icon-position="top-right"
+      :style="{ height: '95%' }"
+    >
+      <!-- 频道列表组件 -->
+        <ChannelEdit :myChannels='channels'></ChannelEdit>
+    </van-popup>
   </div>
 </template>
 
 <script>
 import { getUserChannels } from '../../api/user'
 import ArticleList from './components/ArticleList'
+import ChannelEdit from './components/ChannelEdit'
 export default {
   components: {
-    ArticleList
+    ArticleList,
+    ChannelEdit
   },
   data () {
     return {
       active: 0, // 控制标签页的激活项
-      channels: []
+      channels: [],
+      isChannelEditShow: false
     }
   },
   methods: {
@@ -86,6 +87,21 @@ export default {
 }
 </script>
 
-<style>
+<style lang='less' scoped>
+.home-container{
+  padding: 90px 0 50px 0;
+  /deep/ .van-tabs__wrap{
+    position: fixed;
+    top:46px;
+    left:0;
+    right: 0;
+    .wap-nav{
+      line-height: 44px;
+      position: fixed;
+      right: 0;
+      background: #fff
+    }
+  }
+}
 
 </style>

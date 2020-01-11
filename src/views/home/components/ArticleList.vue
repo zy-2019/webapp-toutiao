@@ -41,11 +41,27 @@ export default {
   },
   methods: {
 
-    onRefresh () {
-      setTimeout(() => {
-        this.$toast('刷新成功')
-        this.isLoading = false
-      }, 500)
+    async onRefresh () {
+      // 和下拉加载思路一样  就是把新数据通过unshift追加到新数组的顶端
+      // 1.获取数据
+      let res = await getArticles({
+        channel_id: this.channel.id,
+        // 第1次使用 Date.now() 获取最新数据
+        // 下一页的数据使用本次返回的数据中的 timestamp
+        // 时间戳，请求新的推荐数据传当前的时间戳，请求历史推荐传指定的时间戳
+        timestamp: Date.now(),
+        with_top: 1
+      })
+      // console.log(res)
+      // 2.把请求获到的数据添加到数组列表中  放到列表的顶部
+      const { results } = res.data.data
+      this.list.unshift(...results)
+
+      // 3.数据加载完毕 关闭loading加载
+      this.isLoading = false
+
+      // 4.提示刷新成功消息
+      this.$toast(`已更新${results.length}条数据`)
     },
 
     async onLoad () {
@@ -75,24 +91,6 @@ export default {
         this.finished = true
       }
     }
-    // 上拉加载更多数据
-    // onLoad () {
-    //   // 1.请求获取数据
-
-    //   setTimeout(() => {
-    //     // 2.把请求获取到的数据添加到数组列表中
-    //     for (let i = 0; i < 10; i++) {
-    //       this.list.push(this.list.length + 1)
-    //     }
-    //     // 3.加载状态结束
-    //     this.loading = false
-
-    //     // 4.数据全部加载完成
-    //     if (this.list.length >= 40) {
-    //       this.finished = true
-    //     }
-    //   }, 500)
-    // }
   }
 }
 </script>

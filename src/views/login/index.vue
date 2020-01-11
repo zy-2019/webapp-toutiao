@@ -108,7 +108,6 @@ export default {
           this.$toast(item[0])
         }, 100)
       }
-
       // 表单验证通过 开始loading加载
       this.$toast.loading({
         message: '登录中...',
