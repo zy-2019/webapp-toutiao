@@ -27,6 +27,7 @@
 
 <script>
 import { ChannelListAll } from '../../../api/channel'
+import { setItem } from '../../../utils/storage'
 export default {
 
   data () {
@@ -54,6 +55,12 @@ export default {
         }
       })
       return channel
+    }
+  },
+  // 监听我的频道变化  发生改变就要存到本地存储
+  watch: {
+    myChannels () {
+      setItem('user-channels', this.myChannels)
     }
   },
   methods: {
