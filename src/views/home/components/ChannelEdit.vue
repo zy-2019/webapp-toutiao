@@ -5,8 +5,8 @@
         </van-cell>
 
         <van-grid :gutter="10">
-            <van-grid-item v-for="item in myChannels" :key="item.id" :text="item.name">
-                <van-icon v-show="isEditShow" name="close" size="20"  slot="icon"/>
+            <van-grid-item @click="handelChannel(index)" v-for="(item,index) in myChannels" :key="item.id" :text="item.name">
+                <van-icon v-show="isEditShow && index !== 0" name="close" size="20"  slot="icon"/>
             </van-grid-item>
         </van-grid>
 
@@ -58,7 +58,18 @@ export default {
   },
   methods: {
 
-    // 点击推荐频道追加到我的频道中
+    // 点击编辑判断是删除还是切换
+    handelChannel (index) {
+      // 如果是编辑状态,则删除频道
+      if (this.isEditShow && index !== 0) {
+        this.myChannels.splice(index, 1)
+      } else {
+        // 如果是非编辑状态 则切换频道
+        this.$emit('input', index) // 修改激活的标签
+
+        this.$emit('close')
+      }
+    }, // 点击推荐频道追加到我的频道中
     ChannelAdd (channel) {
       this.myChannels.push(channel)
     },

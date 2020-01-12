@@ -26,7 +26,7 @@
       :style="{ height: '95%' }"
     >
       <!-- 频道列表组件 -->
-        <ChannelEdit :myChannels='channels'></ChannelEdit>
+        <ChannelEdit v-model="active" @close = 'isChannelEditShow = false' :myChannels='channels'></ChannelEdit>
     </van-popup>
   </div>
 </template>
