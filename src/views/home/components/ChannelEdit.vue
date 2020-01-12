@@ -5,7 +5,8 @@
         </van-cell>
 
         <van-grid :gutter="10">
-            <van-grid-item @click="handelChannel(index)" v-for="(item,index) in myChannels" :key="item.id" :text="item.name">
+            <van-grid-item @click="handelChannel(index)" v-for="(item,index) in myChannels" :key="item.id">
+                <span class="text" :class="{ active : value === index }">{{ item.name  }}</span>
                 <van-icon v-show="isEditShow && index !== 0" name="close" size="20"  slot="icon"/>
             </van-grid-item>
         </van-grid>
@@ -57,10 +58,10 @@ export default {
       return channel
     }
   },
-  // 监听我的频道变化  发生改变就要存到本地存储
+  // 监听我的频道的变化  发生改变就要存到本地存储
   watch: {
     myChannels () {
-      setItem('user-channels', this.myChannels)
+      setItem('user-channel', this.myChannels)
     }
   },
   methods: {
@@ -94,6 +95,10 @@ export default {
     myChannels: {
       type: Array,
       required: true
+    },
+    value: {
+      type: Number,
+      required: true
     }
   }
 }
@@ -109,6 +114,12 @@ export default {
            position: absolute;
             top: -25px;
             right: -7px;
+       }
+       .active{
+           color: red;
+       }
+       .text {
+           font-size: 14px;
        }
     }
 </style>
