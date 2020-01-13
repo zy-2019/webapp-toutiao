@@ -7,8 +7,9 @@
             placeholder="请输入搜索关键词"
             show-action
             @search="onSearch"
-            @cancel="onCancel"
+            @cancel="$router.back()"
             @focus="isResultShow = false"
+            @input="searchChange"
             />
         </form>
 
@@ -17,12 +18,12 @@
 
             <!-- 联想建议 -->
         <van-cell-group v-else-if="searchContent">
-            <van-cell title="单元格" icon="search" />
-            <van-cell title="单元格" icon="search" />
+            <van-cell :title="item" icon="search" v-for="(item,index) in suggestion" :key="index" />
+            <!-- <van-cell title="单元格" icon="search"/> -->
         </van-cell-group>
 
+        <!-- 历史记录 -->
         <van-cell-group v-else>
-            <!-- 历史记录 -->
             <van-cell title="历史记录">
                 <van-icon name="delete"></van-icon>
                 <span>全部删除</span>
@@ -38,11 +39,13 @@
 
 <script>
 import SearchResults from './components/searchResult'
+import { getSuggestion } from '../../api/search'
 export default {
   data () {
     return {
       searchContent: '', // 搜索内容
-      isResultShow: false
+      isResultShow: false,
+      suggestion: [] // 接收联想建议的返回值
     }
   },
   components: {
@@ -50,11 +53,27 @@ export default {
   },
   methods: {
     onSearch () {
+      // 判断输入框是否为空
+      if (!this.searchContent) {
+        this.$toast('请输入内容搜索')
+        return
+      }
       this.isResultShow = true
     },
-    onCancel () {
-      this.$router.push('/')
+
+    // 联想建议的方法  根据input内容改变而改变
+    async searchChange () {
+      const searchText = this.searchContent
+
+      // 判断不能为空才行
+      if (!searchText) {
+        return
+      }
+      let { data } = await getSuggestion({ q: searchText })
+      //   console.log(data)
+      this.suggestion = data.data.options
     }
+
   },
   watch: {
 
