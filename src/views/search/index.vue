@@ -48,6 +48,7 @@
 import SearchResults from './components/searchResult'
 import { getSuggestion } from '../../api/search'
 import { getItem, setItem } from '../../utils/storage'
+import { debounce } from 'lodash'
 export default {
   data () {
     return {
@@ -96,18 +97,32 @@ export default {
       this.isResultShow = true
     },
 
-    // 联想建议的方法  根据input内容改变而改变
-    async searchChange () {
+    // 联想建议防抖优化方法  根据input内容改变而改变
+    searchChange: debounce(async function () {
       const searchText = this.searchContent
 
-      // 判断不能为空才行
+      // 先判断不能为空
       if (!searchText) {
         return
       }
       let { data } = await getSuggestion({ q: searchText })
       //   console.log(data)
       this.suggestion = data.data.options
-    },
+    }, 500),
+
+    // // 联想建议的方法  根据input内容改变而改变
+    // async searchChange () {
+    //   const searchText = this.searchContent
+
+    //   // 判断不能为空才行
+    //   if (!searchText) {
+    //     return
+    //   }
+    //   let { data } = await getSuggestion({ q: searchText })
+    //   //   console.log(data)
+    //   this.suggestion = data.data.options
+    // },
+
     // 联想建议高亮显示
     highLight (str) {
       // 转小写  通过v-html 用replace把对应的文本替换掉
