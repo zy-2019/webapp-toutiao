@@ -30,13 +30,15 @@
         <!-- 历史记录 -->
         <van-cell-group v-else>
             <van-cell title="历史记录">
-                <van-icon name="delete"></van-icon>
-                <span>全部删除</span>
-                &nbsp; &nbsp;
-                <span>完成</span>
+                <template v-if="isDeleteShow">
+                    <span @click="histories = []">全部删除</span>
+                    &nbsp; &nbsp;
+                    <span @click="isDeleteShow = false">完成</span>
+                </template>
+                <van-icon name="delete" v-else @click="isDeleteShow = true"></van-icon>
             </van-cell>
             <van-cell :title="item" icon="search" v-for="(item,index) in histories" :key="index">
-                <van-icon name="close"></van-icon>
+                <van-icon name="close" @click="histories.splice(index,1)"></van-icon>
             </van-cell>
         </van-cell-group>
     </div>
@@ -49,6 +51,7 @@ import { getItem, setItem } from '../../utils/storage'
 export default {
   data () {
     return {
+      isDeleteShow: false,
       searchContent: '', // 搜索内容
       isResultShow: false,
       suggestion: [], // 接收联想建议列表
@@ -56,7 +59,6 @@ export default {
     }
   },
   watch: {
-
     // 监视 =====> 持久化
     histories () {
       setItem('search-history', this.histories)
