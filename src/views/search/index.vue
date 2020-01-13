@@ -35,7 +35,7 @@
                 &nbsp; &nbsp;
                 <span>完成</span>
             </van-cell>
-            <van-cell title="单元格" icon="search">
+            <van-cell :title="item" icon="search" v-for="(item,index) in histories" :key="index">
                 <van-icon name="close"></van-icon>
             </van-cell>
         </van-cell-group>
@@ -45,12 +45,21 @@
 <script>
 import SearchResults from './components/searchResult'
 import { getSuggestion } from '../../api/search'
+import { getItem, setItem } from '../../utils/storage'
 export default {
   data () {
     return {
       searchContent: '', // 搜索内容
       isResultShow: false,
-      suggestion: [] // 接收联想建议列表
+      suggestion: [], // 接收联想建议列表
+      histories: getItem('search-history') || [] // 接收历史记录的列表  如果本地存储有就用本地的 如果没在获取
+    }
+  },
+  watch: {
+
+    // 监视 =====> 持久化
+    histories () {
+      setItem('search-history', this.histories)
     }
   },
   components: {
@@ -64,11 +73,19 @@ export default {
       this.isResultShow = true
     },
     onSearch () {
-      // 判断输入框是否为空
+      // 首先来判断一下输入框是否为空
       if (!this.searchContent) {
         this.$toast('请输入内容搜索')
         return
       }
+      // 判断历史记录有无重复
+      const index = this.histories.indexOf(this.searchContent)
+      if (index !== -1) {
+        // 不等于-1 说明已经找到要删除
+        this.histories.splice(index, 1)
+      }
+      // 最新的放在前面
+      this.histories.unshift(this.searchContent)
       this.isResultShow = true
     },
 
@@ -89,9 +106,6 @@ export default {
       // 转小写  通过v-html 用replace把对应的文本替换掉
       return str.toLowerCase().replace(this.searchContent.toLowerCase(), `<span style="color:red">${this.searchContent}</span>`)
     }
-
-  },
-  watch: {
 
   }
 }

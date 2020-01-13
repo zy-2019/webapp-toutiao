@@ -1,7 +1,10 @@
 <template>
   <div class="home-container">
     <!-- 导航栏 -->
-    <van-nav-bar title="首页" fixed />
+    <van-nav-bar title="首页" fixed/>
+
+    <!-- 此处要优化 -->
+    <van-button type="primary" size="small" round class="jump" @click="$router.push('/search')">点击搜索</van-button>
     <!-- 频道列表 -->
     <van-tabs v-model="active">
       <!-- 面包菜单图标 -->
@@ -49,7 +52,6 @@ export default {
     }
   },
   methods: {
-
     // 获取主页上的频道列表   进行判断  如果本地存储有则用本地存储的  反之请求线上的
     async UserChannels () {
       // 1.定义一个数组存放本地频道
@@ -97,6 +99,11 @@ export default {
       background: #fff
     }
   }
+  // .jump{
+  //   position: absolute;
+  //   right: 0;
+  //   top: 0;
+  // }
 }
 
 </style>
