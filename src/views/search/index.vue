@@ -6,7 +6,7 @@
             v-model="searchContent"
             placeholder="请输入搜索关键词"
             show-action
-            @search="onSearch"
+            @search="onSearch(searchContent)"
             @cancel="$router.back()"
             @focus="isResultShow = false"
             @input="searchChange"
@@ -18,7 +18,7 @@
 
             <!-- 联想建议 -->
         <van-cell-group v-else-if="searchContent">
-            <van-cell @click="searchToo(item)" icon="search" v-for="(item,index) in suggestion" :key="index">
+            <van-cell @click="onSearch(item)" icon="search" v-for="(item,index) in suggestion" :key="index">
                 <div slot="title" v-html="highLight(item)">
                     <!-- 高亮显示替换 -->
                 </div>
@@ -37,7 +37,7 @@
                 </template>
                 <van-icon name="delete" v-else @click="isDeleteShow = true"></van-icon>
             </van-cell>
-            <van-cell :title="item" icon="search" v-for="(item,index) in histories" :key="index">
+            <van-cell @click="onSearch(item)" :title="item" icon="search" v-for="(item,index) in histories" :key="index">
                 <van-icon name="close" @click="histories.splice(index,1)"></van-icon>
             </van-cell>
         </van-cell-group>
@@ -69,17 +69,20 @@ export default {
   },
   methods: {
 
-    // 点击联想建议也可以搜索  让输入框内容变一样  然后进行搜索
-    searchToo (str) {
-      this.searchContent = str
-      this.isResultShow = true
-    },
-    onSearch () {
+    // 点击联想建议也可以搜索  让输入框内容变一样  然后进行搜索  以优化
+    // searchToo (str) {
+    //   this.searchContent = str
+    //   this.isResultShow = true
+    // },
+    onSearch (a) {
       // 首先来判断一下输入框是否为空
-      if (!this.searchContent) {
-        this.$toast('请输入内容搜索')
-        return
-      }
+    //   if (!this.searchContent) {
+    //     this.$toast('请输入内容搜索')
+    //     return
+    //   }
+
+      this.searchContent = a
+
       // 判断历史记录有无重复
       const index = this.histories.indexOf(this.searchContent)
       if (index !== -1) {
@@ -88,6 +91,8 @@ export default {
       }
       // 最新的放在前面
       this.histories.unshift(this.searchContent)
+
+      // 打开搜索结果
       this.isResultShow = true
     },
 
