@@ -14,11 +14,11 @@
         </form>
 
           <!-- 搜索结果组件 -->
-        <SearchResults v-if="isResultShow"></SearchResults>
+        <SearchResults v-if="isResultShow" :query='searchContent'></SearchResults>
 
             <!-- 联想建议 -->
         <van-cell-group v-else-if="searchContent">
-            <van-cell icon="search" v-for="(item,index) in suggestion" :key="index">
+            <van-cell @click="searchToo(item)" icon="search" v-for="(item,index) in suggestion" :key="index">
                 <div slot="title" v-html="highLight(item)">
                     <!-- 高亮显示替换 -->
                 </div>
@@ -57,6 +57,12 @@ export default {
     SearchResults
   },
   methods: {
+
+    // 点击联想建议也可以搜索  让输入框内容变一样  然后进行搜索
+    searchToo (str) {
+      this.searchContent = str
+      this.isResultShow = true
+    },
     onSearch () {
       // 判断输入框是否为空
       if (!this.searchContent) {
