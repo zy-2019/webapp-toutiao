@@ -18,7 +18,12 @@
 
             <!-- 联想建议 -->
         <van-cell-group v-else-if="searchContent">
-            <van-cell :title="item" icon="search" v-for="(item,index) in suggestion" :key="index" />
+            <van-cell icon="search" v-for="(item,index) in suggestion" :key="index">
+                <div slot="title" v-html="highLight(item)">
+                    <!-- 高亮显示替换 -->
+                </div>
+            </van-cell>
+
             <!-- <van-cell title="单元格" icon="search"/> -->
         </van-cell-group>
 
@@ -45,7 +50,7 @@ export default {
     return {
       searchContent: '', // 搜索内容
       isResultShow: false,
-      suggestion: [] // 接收联想建议的返回值
+      suggestion: [] // 接收联想建议列表
     }
   },
   components: {
@@ -72,6 +77,11 @@ export default {
       let { data } = await getSuggestion({ q: searchText })
       //   console.log(data)
       this.suggestion = data.data.options
+    },
+    // 联想建议高亮显示
+    highLight (str) {
+      // 转小写  通过v-html 用replace把对应的文本替换掉
+      return str.toLowerCase().replace(this.searchContent.toLowerCase(), `<span style="color:red">${this.searchContent}</span>`)
     }
 
   },
