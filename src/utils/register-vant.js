@@ -21,7 +21,8 @@ import {
   List,
   PullRefresh,
   Popup,
-  Search
+  Search,
+  loading
 } from 'vant'
 //
 Vue
@@ -45,3 +46,4 @@ Vue
   .use(PullRefresh)
   .use(Popup)
   .use(Search)
+  .use(loading)

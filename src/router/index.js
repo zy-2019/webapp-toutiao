@@ -49,7 +49,8 @@ const routes = [
 
   {
     path: '/detail/:articleId',
-    component: () => import('@/views/detail') // 按需加载
+    component: () => import('@/views/detail'), // 按需加载
+    props: true
   }
 ]
 

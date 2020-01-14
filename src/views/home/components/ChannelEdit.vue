@@ -112,12 +112,11 @@ export default {
           position: relative;
           .van-icon-close{
             position: absolute;
-            top: -35px;
-            right: -40px;
+            top: -40px;
+            right: -45px;
             margin-top: 20px
-       }
+          }
         }
-
        .active{
            color: red;
        }
