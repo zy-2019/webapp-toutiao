@@ -45,6 +45,11 @@ const routes = [
   {
     path: '/search',
     component: () => import('@/views/search') // 按需加载
+  },
+
+  {
+    path: '/detail/:articleId',
+    component: () => import('@/views/detail') // 按需加载
   }
 ]
 

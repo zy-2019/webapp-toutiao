@@ -4,11 +4,13 @@
 import request from '../utils/request'
 
 // 联想建议
-export const getSuggestion = params => {
+export const getSuggestion = q => {
   return request({
     url: '/app/v1_0/suggestion',
     method: 'get',
-    params
+    params: {
+      q
+    }
   })
 }
 

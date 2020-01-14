@@ -1,10 +1,11 @@
 <template>
   <div class="home-container">
     <!-- 导航栏 -->
-    <van-nav-bar title="首页" fixed/>
+    <van-nav-bar title="首页" fixed>
+      <van-icon title="搜索" name="search" slot="right" @click="$router.push('/search')" />
+    </van-nav-bar>
+    <!-- 此处按钮要优化 -->
 
-    <!-- 此处要优化 -->
-    <van-button type="primary" size="small" round class="jump" @click="$router.push('/search')">点击搜索</van-button>
     <!-- 频道列表 -->
     <van-tabs v-model="active">
       <!-- 面包菜单图标 -->
@@ -87,6 +88,26 @@ export default {
 <style lang='less' scoped>
 .home-container{
   padding: 90px 0 50px 0;
+  // .nav-bar{
+  //   width: 100%;
+  //   height: 46px;
+  //   line-height: 46px;
+  //   position: fixed;
+  //   top: 0;
+  //   left: 0;
+  //   background-color: #3196fa;
+  //   color: #fff;
+  //   font-size: 16px;
+  //   padding: 0 20px 0 20px;
+  //   .jump{
+  //     position: absolute;
+  //     right: 50px;
+  //     top: 7px
+  //   }
+  // }
+  .van-icon-search{
+    color: white
+  }
   /deep/ .van-tabs__wrap{
     position: fixed;
     top:46px;
@@ -99,11 +120,6 @@ export default {
       background: #fff
     }
   }
-  // .jump{
-  //   position: absolute;
-  //   right: 0;
-  //   top: 0;
-  // }
 }
 
 </style>

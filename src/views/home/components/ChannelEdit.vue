@@ -6,8 +6,8 @@
 
         <van-grid :gutter="10">
             <van-grid-item @click="handelChannel(index)" v-for="(item,index) in myChannels" :key="item.id">
-                <span class="text" :class="{ active : value === index }">{{ item.name  }}</span>
-                <van-icon v-show="isEditShow && index !== 0" name="close" size="20"  slot="icon"/>
+                <span class="text" slot="text" :class="{ active : value === index }">{{ item.name  }}</span>
+                <van-icon slot="icon" v-show="isEditShow && index !== 0" name="close" size="20"  />
             </van-grid-item>
         </van-grid>
 
@@ -77,7 +77,8 @@ export default {
 
         this.$emit('close')
       }
-    }, // 点击推荐频道追加到我的频道中
+    },
+    // 点击推荐频道追加到我的频道中
     ChannelAdd (channel) {
       this.myChannels.push(channel)
     },
@@ -107,14 +108,16 @@ export default {
 <style scoped lang='less'>
     .channel-edit {
         padding:40px 0;
-        .van-icon{
+        .van-grid-item__content{
+          position: relative;
+          .van-icon-close{
+            position: absolute;
+            top: -35px;
+            right: -40px;
             margin-top: 20px
-        }
-       /deep/ .van-grid-item__icon-wrapper{
-           position: absolute;
-            top: -25px;
-            right: -7px;
        }
+        }
+
        .active{
            color: red;
        }

@@ -76,12 +76,8 @@ export default {
     //   this.isResultShow = true
     // },
     onSearch (a) {
-      // 首先来判断一下输入框是否为空
-    //   if (!this.searchContent) {
-    //     this.$toast('请输入内容搜索')
-    //     return
-    //   }
-
+      // 同样一个方法可以让三个功能使用 因为逻辑是一样的    老高==>重复的事情不做第二次
+    // 每次传来的参数是不同的
       this.searchContent = a
 
       // 判断历史记录有无重复
@@ -105,10 +101,10 @@ export default {
       if (!searchText) {
         return
       }
-      let { data } = await getSuggestion({ q: searchText })
+      let { data } = await getSuggestion(searchText)
       //   console.log(data)
       this.suggestion = data.data.options
-    }, 500),
+    }, 200),
 
     // // 联想建议的方法  根据input内容改变而改变
     // async searchChange () {
@@ -128,7 +124,6 @@ export default {
       // 转小写  通过v-html 用replace把对应的文本替换掉
       return str.toLowerCase().replace(this.searchContent.toLowerCase(), `<span style="color:red">${this.searchContent}</span>`)
     }
-
   }
 }
 </script>
