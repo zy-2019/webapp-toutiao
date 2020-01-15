@@ -71,11 +71,13 @@
       />
       <van-icon
         color="orange"
-        name="star"
+        :name="articles.is_collected ? 'star' : 'star-o'"
+        @click="onCollect"
       />
       <van-icon
         color="#e5645f"
-        name="good-job"
+        :name="articles.attitude === 1 ? 'good-job' : 'good-job-o'"
+        @click="onLikings"
       />
       <van-icon class="share-icon" name="share" />
     </div>
@@ -84,7 +86,12 @@
 </template>
 
 <script>
-import { getArticleById } from '../../api/article'
+import { getArticleById,
+  addCollect,
+  delCollect,
+  delLikings,
+  addLikings
+} from '../../api/article'
 export default {
   name: 'ArticlePage',
   components: {},
@@ -117,14 +124,52 @@ export default {
         console.log(err)
       }
       this.loading = false
+    },
+
+    // 点击收藏或取消收藏
+    async onCollect () {
+      try {
+        //   如果已收藏 则取消收藏
+        if (this.articles.is_collected) {
+          await delCollect(this.articleId)
+          this.articles.is_collected = false
+          this.$toast.success('取消收藏')
+        } else {
+          // 添加收藏
+          await addCollect(this.articleId)
+          this.articles.is_collected = true
+          this.$toast.success('收藏成功')
+        }
+      } catch (err) {
+        this.$toast.fail('操作失败')
+      }
+    },
+
+    // 点赞功能
+    async onLikings () {
+      try {
+        //   如果已点赞,则取消点赞
+        if (this.articles.attitude === 1) {
+          await delLikings(this.articleId)
+          this.articles.attitude = -1
+          this.$toast.success('取消点赞')
+        } else {
+          // 添加点赞
+          await addLikings(this.articleId)
+          this.articles.attitude = 1
+          this.$toast.success('点赞成功')
+        }
+      } catch (err) {
+        this.$toast.fail('操作失败')
+      }
     }
   }
 }
 </script>
 
 <style lang='less' scoped>
-    @import "./github-markdown.css";
-    .article-container {
+@import "./github-markdown.css";
+.article-container {
   padding: 46px 20px 50px;
   background: #fff;
   .loading {
