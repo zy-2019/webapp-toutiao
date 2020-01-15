@@ -128,6 +128,12 @@ export default {
 
     // 点击收藏或取消收藏
     async onCollect () {
+      // 这里 loading 不仅仅是为了交互提示，更重要的是请求期间禁用背景点击功能，防止用户不断的操作界面发出请求
+      this.$toast.loading({
+        duration: 0, // 持续展示 toast
+        message: '操作中...',
+        forbidClick: true // 是否禁止背景点击
+      })
       try {
         //   如果已收藏 则取消收藏
         if (this.articles.is_collected) {
@@ -147,6 +153,12 @@ export default {
 
     // 点赞功能
     async onLikings () {
+      // 两个作用：1、交互提示 2、防止网络慢用户连续不断的点击按钮请求
+      this.$toast.loading({
+        duration: 0, // 持续展示 toast
+        message: '操作中...',
+        forbidClick: true // 是否禁止背景点击
+      })
       try {
         //   如果已点赞,则取消点赞
         if (this.articles.attitude === 1) {
