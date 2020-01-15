@@ -36,7 +36,20 @@
             <p class="time">{{articles.pubdate}}</p>
           </div>
         </div>
-        <van-button class="follow-btn" :type="articles.is_followed ? 'default' : 'info'" size="small" round>{{articles.is_followed ? '已关注' : '+ 关注'}}</van-button>
+
+        <!-- 如果用户没有登录 或者 当前文章的作者不是当前登录用户 才展示关注按钮 -->
+
+        <!-- v-if用来处理关注文章作者按钮的展示状态 -->
+        <van-button
+        v-if="!$store.state.user || articles.aut_id !== $store.state.user.id "
+        class="follow-btn"
+        :type="articles.is_followed ? 'default' : 'info'"
+        size="small"
+        round
+        @click="onFollow">
+        {{articles.is_followed ? '已关注' : '+ 关注'}}
+
+        </van-button>
       </div>
       <div class="markdown-body" v-html="articles.content">
 
@@ -92,6 +105,8 @@ import { getArticleById,
   delLikings,
   addLikings
 } from '../../api/article'
+
+import { delFollowing, addFollowing } from '../../api/user'
 export default {
   name: 'ArticlePage',
   components: {},
@@ -173,6 +188,24 @@ export default {
         }
       } catch (err) {
         this.$toast.fail('操作失败')
+      }
+    },
+    // 如果已关注点击 则取消  否则关注
+    async  onFollow () {
+      try {
+        const authorId = this.articles.aut_id
+        if (this.articles.is_followed) {
+          await delFollowing(authorId)
+          this.$toast.success('取消成功')
+        } else {
+          // 添加关注
+          await addFollowing(authorId)
+          this.$toast.success('关注成功')
+        }
+        // 更新视图  取法即可  不是加关注  就是已关注
+        this.articles.is_followed = !this.articles.is_followed
+      } catch (err) {
+        this.$toast.fail('关注失败')
       }
     }
   }
