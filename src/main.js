@@ -7,6 +7,8 @@ import './utils/register-vant'
 
 import './styles/index.less'
 
+import './utils/datetime' // moment日期格式化
+
 import './utils/validation.js'
 Vue.config.productionTip = false
 

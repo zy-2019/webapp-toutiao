@@ -33,7 +33,7 @@
           />
           <div class="text">
             <p class="name">{{articles.aut_name}}</p>
-            <p class="time">{{articles.pubdate}}</p>
+            <p class="time">{{articles.pubdate | relativeTime}}</p>
           </div>
         </div>
 
@@ -202,7 +202,7 @@ export default {
           await addFollowing(authorId)
           this.$toast.success('关注成功')
         }
-        // 更新视图  取法即可  不是加关注  就是已关注
+        // 更新视图  取反即可  不是加关注  就是已关注
         this.articles.is_followed = !this.articles.is_followed
       } catch (err) {
         this.$toast.fail('关注失败')
