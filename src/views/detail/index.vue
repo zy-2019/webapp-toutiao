@@ -51,11 +51,25 @@
 
         </van-button>
       </div>
-      <div class="markdown-body" v-html="articles.content">
 
-      </div>
+      <!-- 文章内容加载 -->
+      <div class="markdown-body" v-html="articles.content"></div>
+
+      <!-- 文章评论 -->
+        <van-list
+          v-model="articleComment.loading"
+          :finished="articleComment.finished"
+          finished-text="没有更多了"
+          @load="onLoad"
+        >
+          <van-cell
+            v-for="item in articleComment.list"
+            :key="item"
+            :title="item"
+          />
+        </van-list>
     </div>
-    <!-- /文章详情 -->
+    <!-- /文章详情组件 -->
 
     <!-- 加载失败提示 -->
     <div class="error" v-else>
@@ -119,16 +133,41 @@ export default {
   data () {
     return {
       articles: {},
-      loading: true
+      loading: true,
+
+      // 文章评论
+      articleComment: {
+        list: [], // 评论列表
+        loading: false, // 评论加载loading
+        finished: false // 评论是否加载结束
+      }
+
     }
   },
   computed: {},
   watch: {},
   created () {
-    this.loadArticle()
+    this.loadArticle() // 加载文章
   },
   mounted () {},
   methods: {
+
+    // 加载评论列表
+    onLoad () {
+      // 异步更新数据
+      setTimeout(() => {
+        for (let i = 0; i < 10; i++) {
+          this.articleComment.list.push(this.articleComment.list.length + 1)
+        }
+        // 加载状态结束
+        this.articleComment.loading = false
+
+        // 数据全部加载完成
+        if (this.articleComment.list.length >= 40) {
+          this.articleComment.finished = true
+        }
+      }, 500)
+    },
     // 加载文章详情的方法
     async loadArticle () {
       try {
@@ -192,6 +231,7 @@ export default {
     },
     // 如果已关注点击 则取消  否则关注
     async  onFollow () {
+      this.loading = true
       try {
         const authorId = this.articles.aut_id
         if (this.articles.is_followed) {
@@ -207,6 +247,7 @@ export default {
       } catch (err) {
         this.$toast.fail('关注失败')
       }
+      this.loading = false
     }
   }
 }
@@ -215,7 +256,7 @@ export default {
 <style lang='less' scoped>
 @import "./github-markdown.css";
 .article-container {
-  padding: 46px 20px 50px;
+  padding: 46px 20px 150px;
   background: #fff;
   .loading {
     padding-top: 100px;
