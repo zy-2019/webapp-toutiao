@@ -62,11 +62,14 @@
           finished-text="没有更多了"
           @load="onLoad"
         >
-          <van-cell
+          <!-- <van-cell
             v-for="(item,index) in articleComment.list"
             :key="index"
             :title="item.content"
-          />
+          /> -->
+          <CommentItem v-for="(item,index) in articleComment.list"
+          :key="index"
+          :comment='item'/>
         </van-list>
     </div>
     <!-- /文章详情组件 -->
@@ -123,9 +126,12 @@ import { getArticleById,
 import { delFollowing, addFollowing } from '../../api/user'
 
 import { getComments } from '../../api/comment'
+import CommentItem from './components/comment-item'
 export default {
   name: 'ArticlePage',
-  components: {},
+  components: {
+    CommentItem
+  },
   props: {
     articleId: {
       type: String,
@@ -270,11 +276,14 @@ export default {
 <style lang='less' scoped>
 @import "./github-markdown.css";
 .article-container {
-  padding: 46px 20px 150px;
+  padding: 46px 20px 50px;
   background: #fff;
   .loading {
     padding-top: 100px;
     text-align: center;
+  }
+  .van-list{
+    padding-top: 150px
   }
   .detail {
     .title {
