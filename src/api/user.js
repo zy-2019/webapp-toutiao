@@ -51,3 +51,12 @@ export const delFollowing = userId => {
     method: 'DELETE'
   })
 }
+
+// 编辑用户资料---获取用户信息
+export const UpdateUserInfo = target => {
+  return request({
+    url: `/app/v1_0/user/profile`,
+    method: 'GET',
+    target
+  })
+}

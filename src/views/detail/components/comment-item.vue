@@ -68,16 +68,16 @@ export default {
           this.comment.like_count--
           this.$toast.success('已取消点赞')
         } else {
-          // 点赞
+          // 点赞功能
           await addCommentLike(commentId)
           // this.comment.like_count = 1
           this.comment.like_count++
           this.$toast.success('点赞成功')
         }
-        // 更新视图
+        // 更新视图  逻辑是=> true变为false false变为true 只有这两种结果
         this.comment.is_liking = !this.comment.is_liking
       } catch (err) {
-        this.$toast.fail('点赞失败')
+        this.$toast.fail('操作失败')
       }
     }
   }

@@ -51,6 +51,10 @@ const routes = [
     path: '/detail/:articleId',
     component: () => import('@/views/detail'), // 按需加载
     props: true
+  },
+  {
+    path: '/user',
+    component: () => import ('../views/user')
   }
 ]
 
