@@ -64,13 +64,11 @@ export default {
         // 如果已点赞 则取消点赞
         if (this.comment.is_liking) {
           await delCommentLike(commentId)
-          // this.comment.like_count = '赞'
           this.comment.like_count--
           this.$toast.success('已取消点赞')
         } else {
           // 点赞功能
           await addCommentLike(commentId)
-          // this.comment.like_count = 1
           this.comment.like_count++
           this.$toast.success('点赞成功')
         }
