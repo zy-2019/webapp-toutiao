@@ -19,7 +19,7 @@
         <van-cell title="昵称" is-link :value="Info.name" @click="IsNicknameShow = true" />
         <van-cell title="手机号" is-link :value="Info.mobile" />
         <van-cell title="性别" @click="IsGenderShow = true" is-link :value="Info.gender === 0  ? '男' : '女'" />
-        <van-cell title="生日" is-link :value="Info.birthday" />
+        <van-cell title="生日" @click="IsBirthdayShow = true" is-link :value="Info.birthday" />
       </van-cell-group>
 
       <!-- 修改昵称弹层组件 -->
@@ -42,6 +42,17 @@
         position="bottom">
       </van-action-sheet>
 
+      <!-- 修改用户生日弹层组件 -->
+      <van-popup v-model="IsBirthdayShow" position="bottom">
+        <van-datetime-picker
+          v-model="currentDate"
+          type="date"
+          :min-date="minDate"
+          :max-date="maxDate"
+          @cancel='IsBirthdayShow = false'
+          @confirm='UpdateBirthday'
+        />
+      </van-popup>
   </div>
 
 </template>
@@ -49,7 +60,7 @@
 <script>
 import { UpdateUserInfo, PutNickName } from '../../api/user'
 import nickName from './components/nickname'
-
+import moment from 'moment'
 export default {
   data () {
     return {
@@ -59,15 +70,30 @@ export default {
       actions: [
         { name: '男', value: 0 },
         { name: '女', value: 1 }
-      ]
+      ],
+      IsBirthdayShow: false,
+      minDate: new Date(1999, 0, 1),
+      maxDate: new Date(),
+      currentDate: new Date()
     }
   },
   components: {
     nickName
   },
   methods: {
+    // 选择更新生日时间事件
+    async UpdateBirthday (value) {
+      // 提交更新
+      value = moment(value).format('YYYY-MM-DD') // 处理格式
 
-    // 选择更新事件
+      await this.saveProfile('birthday', value)
+      // 更新视图
+      this.Info.birthday = value
+      // 关闭弹层
+      this.IsBirthdayShow = false
+    },
+
+    // 选择更新性别事件
     async onSelect (item) {
       // 提交更新
       await this.saveProfile('gender', item.value)

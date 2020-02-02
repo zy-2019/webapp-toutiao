@@ -23,7 +23,8 @@ import {
   Popup,
   Search,
   loading,
-  ActionSheet
+  ActionSheet,
+  DatetimePicker
 } from 'vant'
 //
 Vue
@@ -49,3 +50,4 @@ Vue
   .use(Search)
   .use(loading)
   .use(ActionSheet)
+  .use(DatetimePicker)

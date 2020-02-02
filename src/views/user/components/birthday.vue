@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="birthDay">
         123
     </div>
 </template>
