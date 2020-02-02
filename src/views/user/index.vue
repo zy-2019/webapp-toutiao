@@ -18,7 +18,7 @@
         </van-cell>
         <van-cell title="昵称" is-link :value="Info.name" @click="IsNicknameShow = true" />
         <van-cell title="手机号" is-link :value="Info.mobile" />
-        <van-cell title="性别" is-link :value="Info.gender === 0  ? '男' : '女'" />
+        <van-cell title="性别" @click="IsGenderShow = true" is-link :value="Info.gender === 0  ? '男' : '女'" />
         <van-cell title="生日" is-link :value="Info.birthday" />
       </van-cell-group>
 
@@ -35,15 +35,11 @@
       <!-- 修改用户性别弹层组件 -->
       <van-action-sheet
         :actions="actions"
-        cancel-text="取消"
-        @cancel="onCancel"
         v-model="IsGenderShow"
+        @select="onSelect"
+        cancel-text="取消"
+        @cancel="IsGenderShow = false"
         position="bottom">
-        <!-- 用户性别组件 -->
-        <genDer
-        :name='Info.gender'
-        @close='IsNicknameShow = false'
-        />
       </van-action-sheet>
 
   </div>
@@ -53,7 +49,7 @@
 <script>
 import { UpdateUserInfo, PutNickName } from '../../api/user'
 import nickName from './components/nickname'
-import genDer from './components/gender'
+
 export default {
   data () {
     return {
@@ -61,17 +57,25 @@ export default {
       IsNicknameShow: false, // 控制弹层显示隐藏
       IsGenderShow: false,
       actions: [
-        { name: '男' },
-        { name: '女' },
-        { name: '取消' }
+        { name: '男', value: 0 },
+        { name: '女', value: 1 }
       ]
     }
   },
   components: {
-    nickName,
-    genDer
+    nickName
   },
   methods: {
+
+    // 选择更新事件
+    async onSelect (item) {
+      // 提交更新
+      await this.saveProfile('gender', item.value)
+      // 更新视图
+      this.Info.gender = item.value
+      // 关闭弹层
+      this.IsGenderShow = false
+    },
 
     // 子组件点击确定父组件发请求修改昵称
     async onSave (name) {
