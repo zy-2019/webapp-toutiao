@@ -25,26 +25,82 @@
       <!-- 修改昵称弹层组件 -->
       <van-popup v-model="IsNicknameShow" position="bottom">
         <!-- 修改昵称的Nickname组件 -->
-        <nickName/>
+        <nickName
+        :name='Info.name'
+        @close='IsNicknameShow = false'
+        @confirm='onSave'
+        />
       </van-popup>
+
+      <!-- 修改用户性别弹层组件 -->
+      <van-action-sheet
+        :actions="actions"
+        cancel-text="取消"
+        @cancel="onCancel"
+        v-model="IsGenderShow"
+        position="bottom">
+        <!-- 用户性别组件 -->
+        <genDer
+        :name='Info.gender'
+        @close='IsNicknameShow = false'
+        />
+      </van-action-sheet>
+
   </div>
 
 </template>
 
 <script>
-import { UpdateUserInfo } from '../../api/user'
+import { UpdateUserInfo, PutNickName } from '../../api/user'
 import nickName from './components/nickname'
+import genDer from './components/gender'
 export default {
   data () {
     return {
       Info: {}, // 接收返回的用户信息
-      IsNicknameShow: false // 控制弹层显示隐藏
+      IsNicknameShow: false, // 控制弹层显示隐藏
+      IsGenderShow: false,
+      actions: [
+        { name: '男' },
+        { name: '女' },
+        { name: '取消' }
+      ]
     }
   },
   components: {
-    nickName
+    nickName,
+    genDer
   },
   methods: {
+
+    // 子组件点击确定父组件发请求修改昵称
+    async onSave (name) {
+      // 提交更新
+      await this.saveProfile('name', name)
+
+      // 更新视图
+      this.Info.name = name
+
+      // 关闭弹层
+      this.IsNicknameShow = false
+    },
+    // -----------------------------------------------------------------------------------
+    // 为啥可以封装方法 ？？因为用的是同一个接口呀
+    async saveProfile (field, value) {
+      this.$toast.loading({
+        duration: 0, // 持续展示 toast
+        message: '保存中...',
+        forbidClick: true // 是否禁止背景点击
+      })
+      try {
+        await PutNickName({
+          [field]: value
+        })
+        this.$toast.success('保存成功')
+      } catch (err) {
+        this.$toast.fail('保存失败')
+      }
+    },
     // 请求数据信息
     async LoadUserInfo () {
       try {

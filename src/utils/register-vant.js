@@ -22,7 +22,8 @@ import {
   PullRefresh,
   Popup,
   Search,
-  loading
+  loading,
+  ActionSheet
 } from 'vant'
 //
 Vue
@@ -47,3 +48,4 @@ Vue
   .use(Popup)
   .use(Search)
   .use(loading)
+  .use(ActionSheet)

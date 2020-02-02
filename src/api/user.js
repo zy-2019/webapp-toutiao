@@ -60,3 +60,12 @@ export const UpdateUserInfo = target => {
     target
   })
 }
+
+// 编辑用户资料--修改用户昵称
+export const PutNickName = data => {
+  return request({
+    url: `/app/v1_0/user/profile`,
+    method: 'PATCH',
+    data
+  })
+}

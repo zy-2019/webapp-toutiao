@@ -5,13 +5,14 @@
       title="编辑昵称"
       left-text="取消"
       right-text="确定"
+      @click-left="$emit('close')"
+      @click-right="$emit('confirm',message)"
     />
-    <!-- @click-left="onClickLeft"
-    @click-right="onClickRight" -->
 
     <van-field
       class="bottom"
-      v-model="message"
+      :value="name"
+      @input="message = $event"
       rows="2"
       autosize
       type="textarea"
@@ -27,6 +28,12 @@ export default {
   data () {
     return {
       message: ''
+    }
+  },
+  props: {
+    name: {
+      type: String,
+      default: ''
     }
   },
   methods: {

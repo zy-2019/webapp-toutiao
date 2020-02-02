@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="gender">
         123
     </div>
 </template>
