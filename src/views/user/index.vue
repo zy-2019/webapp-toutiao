@@ -8,7 +8,7 @@
 
       <!-- 用户信息编辑 -->
       <van-cell-group>
-        <van-cell title="头像" is-link >
+        <van-cell title="头像" is-link @click="onFile" >
             <van-image
             width="30"
             height="30"
@@ -16,6 +16,10 @@
             :src="Info.photo"
           />
         </van-cell>
+
+        <!-- 文件头像上传 -->
+        <input type="file" hidden ref="file" @change="onFileChange">
+
         <van-cell title="昵称" is-link :value="Info.name" @click="IsNicknameShow = true" />
         <van-cell title="手机号" is-link :value="Info.mobile" />
         <van-cell title="性别" @click="IsGenderShow = true" is-link :value="Info.gender === 0  ? '男' : '女'" />
@@ -80,7 +84,21 @@ export default {
   components: {
     nickName
   },
+  computed: {
+    file () {
+      return this.$refs['file']
+    }
+  },
   methods: {
+
+    onFileChange () {
+
+    },
+    // 上传用户头像
+    onFile () {
+      // 手动触发dom节点的click事件
+      this.file.click()
+    },
     // 选择更新生日时间事件
     async UpdateBirthday (value) {
       // 提交更新
