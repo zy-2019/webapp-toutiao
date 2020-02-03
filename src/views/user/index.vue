@@ -59,7 +59,7 @@
       </van-popup>
 
       <!-- 上传用户头像 -->
-      <van-image-preview v-model="PreviewShow" :images="images" >
+      <van-image-preview v-model="PreviewShow" :images="images" @close='file.value=""'>
         <van-nav-bar
         slot="cover"
         left-text='取消'
@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import { UpdateUserInfo, PutNickName } from '../../api/user'
+import { UpdateUserInfo, PutNickName, PutUserPhoto } from '../../api/user'
 import nickName from './components/nickname'
 import moment from 'moment'
 export default {
@@ -105,8 +105,8 @@ export default {
   },
   methods: {
     // 更新用户头像
-    onSaveImage () {
-
+    async onSaveImage () {
+      await PutUserPhoto()
     },
 
     onFileChange () {
