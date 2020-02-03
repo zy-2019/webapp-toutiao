@@ -106,7 +106,23 @@ export default {
   methods: {
     // 更新用户头像
     async onSaveImage () {
-      await PutUserPhoto()
+      this.$toast.loading({
+        duration: 0, // 持续展示 toast
+        message: '保存中...',
+        forbidClick: true // 是否禁止背景点击
+      })
+      try {
+        const fd = new FormData()
+        fd.append('photo', this.file.files[0])
+        const { data } = await PutUserPhoto(fd)
+        // 更新视图
+        this.Info.photo = data.data.photo
+        this.$toast.success('保存成功')
+        // 关闭头像预览
+        this.PreviewShow = false
+      } catch (err) {
+        this.$toast.fail('保存失败')
+      }
     },
 
     onFileChange () {
@@ -180,8 +196,8 @@ export default {
     // 请求数据信息
     async LoadUserInfo () {
       try {
-        let res = await UpdateUserInfo()
-        this.Info = res.data.data
+        let { data } = await UpdateUserInfo()
+        this.Info = data.data
       } catch (err) {
         this.$toast.fail('获取数据失败')
       }
