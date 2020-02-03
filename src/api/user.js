@@ -69,3 +69,12 @@ export const PutNickName = data => {
     data
   })
 }
+
+// 编辑用户资料--修改用户头像
+export const PutUserPhoto = data => {
+  return request({
+    url: `/app/v1_0/user/photo`,
+    method: 'PATCH',
+    data
+  })
+}

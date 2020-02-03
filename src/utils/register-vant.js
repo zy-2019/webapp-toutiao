@@ -24,7 +24,8 @@ import {
   Search,
   loading,
   ActionSheet,
-  DatetimePicker
+  DatetimePicker,
+  ImagePreview
 } from 'vant'
 //
 Vue
@@ -51,3 +52,4 @@ Vue
   .use(loading)
   .use(ActionSheet)
   .use(DatetimePicker)
+  .use(ImagePreview)

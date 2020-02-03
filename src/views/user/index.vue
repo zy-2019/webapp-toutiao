@@ -57,6 +57,16 @@
           @confirm='UpdateBirthday'
         />
       </van-popup>
+
+      <!-- 上传用户头像 -->
+      <van-image-preview v-model="PreviewShow" :images="images" >
+        <van-nav-bar
+        slot="cover"
+        left-text='取消'
+        right-text='确定'
+        @click-left="PreviewShow = false"
+        @click-right='onSaveImage'/>
+      </van-image-preview>
   </div>
 
 </template>
@@ -75,10 +85,14 @@ export default {
         { name: '男', value: 0 },
         { name: '女', value: 1 }
       ],
+
       IsBirthdayShow: false,
       minDate: new Date(1999, 0, 1),
       maxDate: new Date(),
-      currentDate: new Date()
+      currentDate: new Date(),
+
+      PreviewShow: false,
+      images: []
     }
   },
   components: {
@@ -90,9 +104,23 @@ export default {
     }
   },
   methods: {
+    // 更新用户头像
+    onSaveImage () {
+
+    },
 
     onFileChange () {
+      // 文件对象
+      const fileObj = this.file.files[0]
 
+      // 获取文件数据
+      const fileData = URL.createObjectURL(fileObj)
+
+      // 将预览的图片放到数组中
+      this.images = [fileData]
+
+      // 显示图片预览
+      this.PreviewShow = true
     },
     // 上传用户头像
     onFile () {
@@ -165,6 +193,25 @@ export default {
 }
 </script>
 
-<style>
+<style lang='less' scoped>
+ /deep/ .van-image-preview__cover{
+   top: unset;
+   bottom:0;
+   right: 0;
+   left: 0;
+   .van-nav-bar{
+     background:rgb(0, 0,0);
+     .van-nav-bar__left{
+       .van-nav-bar__text{
+      color: white
+    }
+     }
+     .van-nav-bar__right{
+        .van-nav-bar__text{
+      color: red
+    }
+     }
 
+   }
+  }
 </style>
