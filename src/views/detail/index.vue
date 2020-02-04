@@ -62,11 +62,7 @@
           finished-text="没有更多了"
           @load="onLoad"
         >
-          <!-- <van-cell
-            v-for="(item,index) in articleComment.list"
-            :key="index"
-            :title="item.content"
-          /> -->
+
           <CommentItem v-for="(item,index) in articleComment.list"
           :key="index"
           :comment='item'/>
@@ -130,7 +126,7 @@
           show-word-limit
         />
 
-        <van-button size="small" type="primary" @click="postComment">发布</van-button>
+        <van-button size="small" type="primary" @click="postComment" :disabled="!CommentMessage">发布</van-button>
 
       </van-popup>
     </div>
@@ -148,7 +144,7 @@ import { getArticleById,
 
 import { delFollowing, addFollowing } from '../../api/user'
 
-import { getComments } from '../../api/comment'
+import { getComments, addComment } from '../../api/comment'
 import CommentItem from './components/comment-item'
 export default {
   name: 'ArticlePage',
@@ -175,7 +171,7 @@ export default {
         totalCount: 0 // 总条数
       },
       isCommentShow: false, // 一级评论弹层
-      CommentMessage: '' // 发布一级评论
+      CommentMessage: '' // 发布一级评论内容
 
     }
   },
@@ -187,8 +183,40 @@ export default {
   mounted () {},
   methods: {
     // 发表评论
-    postComment () {
+    async postComment () {
+      // 拿到数据
+      // 请求提交
+      // 清空输入框
+      // 关闭弹层
+      const CommentMessage = this.CommentMessage
 
+      // 非空校验
+      if (!CommentMessage) {
+        return
+      }
+      this.$toast.loading({
+        duration: 0, // 持续展示 toast
+        message: '发布中...',
+        forbidClick: true // 是否禁止背景点击
+      })
+      try {
+        const { data } = await addComment({
+          target: this.articleId,
+          content: CommentMessage
+        })
+        // 关闭发布评论的弹层
+        this.isCommentShow = false
+        // 清空文本框
+        this.CommentMessage = ''
+        // 将最新发布的评论展示到列表的顶部
+        this.articleComment.list.unshift(data.data.new_obj)
+        // 更新总条数
+        this.articleComment.totalCount++
+        // 提示消息
+        this.$toast.success('发布成功')
+      } catch (err) {
+        this.$toast.fail('发布失败')
+      }
     },
     // 加载评论列表
     async  onLoad () {
