@@ -93,6 +93,7 @@
         type="default"
         round
         size="small"
+        @click="isCommentShow = true"
       >写评论</van-button>
       <van-icon
         class="comment-icon"
@@ -112,6 +113,28 @@
       <van-icon class="share-icon" name="share" />
     </div>
     <!-- /底部区域 -->
+
+    <!-- 发布文章评论弹层 -->
+    <div class="van-popup">
+        <van-popup
+        v-model="isCommentShow"
+        position="bottom"
+      >
+        <van-field
+          v-model="CommentMessage"
+          rows="2"
+          autosize
+          type="textarea"
+          maxlength="50"
+          placeholder="请输入评论"
+          show-word-limit
+        />
+
+        <van-button size="small" type="primary" @click="postComment">发布</van-button>
+
+      </van-popup>
+    </div>
+
   </div>
 </template>
 
@@ -150,7 +173,9 @@ export default {
         finished: false, // 评论是否加载结束
         offset: null, // 请求下一页数据的页码
         totalCount: 0 // 总条数
-      }
+      },
+      isCommentShow: false, // 一级评论弹层
+      CommentMessage: '' // 发布一级评论
 
     }
   },
@@ -161,6 +186,10 @@ export default {
   },
   mounted () {},
   methods: {
+    // 发表评论
+    postComment () {
+
+    },
     // 加载评论列表
     async  onLoad () {
       const articleComment = this.articleComment
@@ -357,6 +386,14 @@ export default {
     }
     .share-icon {
       bottom: -2px;
+    }
+  }
+  .van-popup--bottom{
+    display: flex;
+    padding: 15px;
+    align-items: flex-end;
+    .van-cell{
+      margin-right: 20px
     }
   }
 }
