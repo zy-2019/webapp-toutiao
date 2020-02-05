@@ -30,7 +30,7 @@ export const delCommentLike = params => {
 
 // 添加评论或评论回复
 
-export function addComment (data) {
+export const addComment = data => {
   return request({
     method: 'POST',
     url: '/app/v1_0/comments',
