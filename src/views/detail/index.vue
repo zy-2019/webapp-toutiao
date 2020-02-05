@@ -114,27 +114,26 @@
     <!-- /底部区域 -->
 
     <!-- 发布文章评论弹层 -->
-    <div>
-        <van-popup
-        class="writeComment"
+      <van-popup
         v-model="isCommentShow"
         position="bottom"
       >
-        <van-field
-          class="rightField"
-          v-model="CommentMessage"
-          rows="2"
-          autosize
-          type="textarea"
-          maxlength="50"
-          placeholder="请输入评论"
-          show-word-limit
-        />
+        <div class="writeComment">
+          <van-field
+            class="rightField"
+            v-model="CommentMessage"
+            rows="2"
+            autosize
+            type="textarea"
+            maxlength="50"
+            placeholder="请输入评论"
+            show-word-limit
+          />
 
-        <van-button size="small" type="primary" @click="postComment" :disabled="!CommentMessage">发布</van-button>
+          <van-button size="small" type="primary" @click="postComment" :disabled="!CommentMessage">发布</van-button>
+        </div>
 
       </van-popup>
-    </div>
 
     <!-- 评论回复弹层 -->
     <van-popup
