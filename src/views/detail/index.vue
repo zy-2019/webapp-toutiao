@@ -143,9 +143,12 @@
       :style="{ height: '80%' }"
     >
       <!-- 回复评论内容组件 -->
+
+      <!-- v-if 作用是 每次弹层显示的时候重新渲染组件 -->
         <ReplyComment
         @click-close="ReplyCommentShow = false"
         :comment='currentComment'
+        v-if="ReplyCommentShow"
         >
         </ReplyComment>
 
