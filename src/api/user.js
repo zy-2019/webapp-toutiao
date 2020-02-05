@@ -81,24 +81,28 @@ export const PutUserPhoto = data => {
 
 // 我的收藏
 
-export const MyCollect = () => {
+export const MyCollect = params => {
   return request({
     url: `/app/v1_0/article/collections`,
-    method: 'GET'
+    method: 'GET',
+    params
   })
 }
 // 我的历史
-export const MyHistory = () => {
+
+export const MyHistory = params => {
   return request({
     url: `/app/v1_0/user/histories`,
-    method: 'GET'
+    method: 'GET',
+    params
   })
 }
 
 // 我的作品
-export const MyArticles = () => {
+export const MyArticles = params => {
   return request({
-    url: `/app/v1_0/users/:user_id/articles`,
-    method: 'GET'
+    url: `/app/v1_0/user/articles`,
+    method: 'GET',
+    params
   })
 }

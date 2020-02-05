@@ -27,7 +27,7 @@ import myArticles from './components/my-articles'
 export default {
   data () {
     return {
-      active: 1
+      active: 0
     }
   },
   components: {
