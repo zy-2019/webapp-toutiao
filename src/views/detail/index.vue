@@ -66,7 +66,9 @@
           <CommentItem v-for="(item,index) in articleComment.list"
           :key="index"
           :comment='item'
-          @click-reply='ReplyCommentShow = true'/>
+          @click-reply='onReplyShow'
+
+          />
         </van-list>
     </div>
     <!-- /文章详情组件 -->
@@ -112,12 +114,14 @@
     <!-- /底部区域 -->
 
     <!-- 发布文章评论弹层 -->
-    <div class="van-popup">
+    <div>
         <van-popup
+        class="writeComment"
         v-model="isCommentShow"
         position="bottom"
       >
         <van-field
+          class="rightField"
           v-model="CommentMessage"
           rows="2"
           autosize
@@ -133,16 +137,19 @@
     </div>
 
     <!-- 评论回复弹层 -->
-      <van-popup
-          v-model="ReplyCommentShow"
-          position="bottom"
-          :style="{height:'95%'}"
-        >
-        <!-- 封装回复内容组件 -->
+    <van-popup
+      v-model="ReplyCommentShow"
+      position="bottom"
+      :style="{ height: '80%' }"
+    >
+      <!-- 回复评论内容组件 -->
         <ReplyComment
-        @click-close="ReplyCommentShow = false"/>
+        @click-close="ReplyCommentShow = false"
+        :comment='currentComment'
+        >
+        </ReplyComment>
 
-      </van-popup>
+    </van-popup>
   </div>
 </template>
 
@@ -185,8 +192,12 @@ export default {
         totalCount: 0 // 总条数
       },
       isCommentShow: false, // 一级评论弹层
+
       CommentMessage: '', // 发布一级评论内容
-      ReplyCommentShow: false
+
+      ReplyCommentShow: false, // 一级回复弹层
+
+      currentComment: {} // 点击回复的那个评论对象
     }
   },
   computed: {},
@@ -196,6 +207,14 @@ export default {
   },
   mounted () {},
   methods: {
+    //
+    async onReplyShow (comment) {
+      // 将子组件中传给我评论对象存储到当前组件
+      this.currentComment = comment
+
+      // 展示评论回复弹层
+      this.ReplyCommentShow = true
+    },
     // 发表评论
     async postComment () {
       // 拿到数据
@@ -246,6 +265,7 @@ export default {
       // 2.将数据加载到列表中
 
       const { results } = data.data // 直接解构赋值
+
       articleComment.list.push(...results)
 
       articleComment.totalCount = data.data.total_count // 更新总数据条数
@@ -430,12 +450,12 @@ export default {
       bottom: -2px;
     }
   }
-  .van-popup--bottom{
+  .writeComment{
     display: flex;
     padding: 15px;
     align-items: flex-end;
-    .van-cell{
-      margin-right: 20px
+    .rightField{
+      margin-right: 10px
     }
   }
 }

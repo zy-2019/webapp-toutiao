@@ -1,23 +1,24 @@
 <template>
-    <div class="reply-comment">
+    <div class="replyNav">
         <!-- 导航栏 -->
-        <van-nav-bar
-        class="replyNav"
-        title="标题"
-        >
+        <van-nav-bar :title="`${comment.reply_count}条回复`">
             <van-icon
-            slot="left"
-            name="cross"
-            @click="$emit('click-close')"/>
+                slot="left"
+                name="cross"
+                @click="$emit('click-close')"
+            />
         </van-nav-bar>
         <!-- 导航栏 -->
 
-         <!-- 当前评论项 -->
+        <!-- 当前评论项 -->
+
+        <CommentItem :comment="comment"/>
         <!-- /当前评论项 -->
 
-        <van-cell title="所有回复" />
+        <!-- <van-cell title="所有回复" /> -->
 
         <!-- 评论的回复列表 -->
+
         <!-- /评论的回复列表 -->
 
         <!-- 底部 -->
@@ -26,11 +27,28 @@
 </template>
 
 <script>
+import CommentItem from './comment-item'
 export default {
+  data () {
+    return {
 
+    }
+  },
+  components: {
+    CommentItem
+  },
+  methods: {
+
+  },
+  props: {
+    comment: {
+      type: Object,
+      required: true
+    }
+  }
 }
 </script>
 
-<style lang='less' scoped>
+<style scoped lang="less">
 
 </style>
