@@ -26,6 +26,7 @@
         <van-button
           size="mini"
           type="default"
+          @click="$emit('click-reply')"
         >回复 {{ comment.reply_count }}</van-button>
       </p>
     </div>
@@ -37,6 +38,7 @@
       <span>{{ comment.like_count ? comment.like_count : '赞' }}</span>
     </div>
   </van-cell>
+
 </template>
 
 <script>
@@ -51,7 +53,9 @@ export default {
     }
   },
   data () {
-    return {}
+    return {
+
+    }
   },
   computed: {},
   watch: {

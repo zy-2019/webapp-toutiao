@@ -65,7 +65,8 @@
 
           <CommentItem v-for="(item,index) in articleComment.list"
           :key="index"
-          :comment='item'/>
+          :comment='item'
+          @click-reply='ReplyCommentShow = true'/>
         </van-list>
     </div>
     <!-- /文章详情组件 -->
@@ -131,6 +132,17 @@
       </van-popup>
     </div>
 
+    <!-- 评论回复弹层 -->
+      <van-popup
+          v-model="ReplyCommentShow"
+          position="bottom"
+          :style="{height:'95%'}"
+        >
+        <!-- 封装回复内容组件 -->
+        <ReplyComment
+        @click-close="ReplyCommentShow = false"/>
+
+      </van-popup>
   </div>
 </template>
 
@@ -146,10 +158,12 @@ import { delFollowing, addFollowing } from '../../api/user'
 
 import { getComments, addComment } from '../../api/comment'
 import CommentItem from './components/comment-item'
+import ReplyComment from './components/reply-comment'
 export default {
   name: 'ArticlePage',
   components: {
-    CommentItem
+    CommentItem,
+    ReplyComment
   },
   props: {
     articleId: {
@@ -171,8 +185,8 @@ export default {
         totalCount: 0 // 总条数
       },
       isCommentShow: false, // 一级评论弹层
-      CommentMessage: '' // 发布一级评论内容
-
+      CommentMessage: '', // 发布一级评论内容
+      ReplyCommentShow: false
     }
   },
   computed: {},
