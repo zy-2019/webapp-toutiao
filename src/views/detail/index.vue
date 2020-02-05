@@ -147,6 +147,7 @@
         <ReplyComment
         @click-close="ReplyCommentShow = false"
         :comment='currentComment'
+        :article-id='articleId'
         v-if="ReplyCommentShow"
         >
         </ReplyComment>
