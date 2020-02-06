@@ -113,6 +113,7 @@ export default {
     top:46px;
     left:0;
     right: 0;
+    z-index: 1;
     .wap-nav{
       line-height: 44px;
       position: fixed;

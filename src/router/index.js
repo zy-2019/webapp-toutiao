@@ -49,26 +49,30 @@ const routes = [
 
   {
     path: '/detail/:articleId',
+    name: 'article',
     component: () => import('@/views/detail'), // 按需加载
     props: true
   },
+
   {
     path: '/user',
     component: () => import ('../views/user')
   },
   // 我的收藏/历史/作品路由
   {
-    path: '/my-article',
-    component: () => import ('../views/user-articles')
-  },
-  {
-    path: '/my-article/collect',
-    component: () => import ('../views/user-articles')
-  },
-  {
-    path: '/my-article/history',
-    component: () => import ('../views/user-articles')
+    path: '/my-article/:type?', // ？是第二段路径可有可无
+    component: () => import ('../views/user-articles'),
+    props: true
   }
+
+  // {
+  //   path: '/my-article/collect',
+  //   component: () => import ('../views/user-articles')
+  // },
+  // {
+  //   path: '/my-article/history',
+  //   component: () => import ('../views/user-articles')
+  // }
 
 ]
 

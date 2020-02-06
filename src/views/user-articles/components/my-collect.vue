@@ -6,7 +6,12 @@
         finished-text="没有更多了"
         @load="onLoad"
     >
-        <van-cell v-for="(item,index) in list" :key="index" :title="item.title" />
+        <van-cell
+        v-for="(item,index) in list"
+        :key="index"
+        :title="item.title"
+        @click="$router.push('/detail/'+item.art_id)"
+        />
     </van-list>
   </div>
 </template>
@@ -30,7 +35,7 @@ export default {
         page: this.page,
         per_page: this.per_page
       })
-      // 放到列表中
+      // 数据放到列表中
       const { results } = data.data
       this.list.push(...results)
       // 关闭loading加载
