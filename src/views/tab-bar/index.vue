@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="TabBar">
       <!-- 子路由出口 -->
       <keep-alive>
         <router-view />
@@ -16,6 +16,7 @@
 
 <script>
 export default {
+  name: 'TabBar',
   data () {
     return {
 

@@ -2,8 +2,11 @@
   <div id="app">
     <!-- 根路由出口 -->
     <!-- 动态组件 -->
-
-    <keep-alive>
+    <!--
+      include 可以配置哪些组件缓存
+      exclude 配置那些组件不要缓存
+    -->
+    <keep-alive :include='catchPages'>
       <router-view />
     </keep-alive>
 
@@ -12,7 +15,12 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  data () {
+    return {
+      catchPages: ['TabBar']
+    }
+  }
 }
 </script>
 
