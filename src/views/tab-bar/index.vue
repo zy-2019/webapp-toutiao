@@ -1,7 +1,9 @@
 <template>
   <div>
       <!-- 子路由出口 -->
-        <router-view></router-view>
+      <keep-alive>
+        <router-view />
+      </keep-alive>
       <!-- 子路由出口 -->
     <van-tabbar route>
         <van-tabbar-item icon="wap-home-o" to="/">首页</van-tabbar-item>

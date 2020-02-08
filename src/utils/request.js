@@ -77,6 +77,7 @@ async function (err) {
 function redirectLogin () {
   // router.currentRoute 当前路由对象，和你在组件中访问的 this.$route 是同一个东西
   // query 参数的数据格式就是：?key=value&key=value
+  this.$toast.fail('更新失败')
   router.push('/login?redirect=' + router.currentRoute.fullPath)
 }
 // 导出

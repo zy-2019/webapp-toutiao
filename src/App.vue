@@ -1,7 +1,12 @@
 <template>
   <div id="app">
     <!-- 根路由出口 -->
-    <router-view></router-view>
+    <!-- 动态组件 -->
+
+    <keep-alive>
+      <router-view />
+    </keep-alive>
+
   </div>
 </template>
 
