@@ -3,7 +3,7 @@
     <van-nav-bar
         title="收藏/历史/作品"
         left-arrow
-        @click-left="$router.back()"
+        @click-left="$router.push('/my')"
         fixed
     />
     <van-tabs v-model="active">

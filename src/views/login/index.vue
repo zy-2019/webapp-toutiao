@@ -124,7 +124,9 @@ export default {
         // 提示success 或者 fail的时候，会把其他的toast先清除
         this.$toast.success('登录成功')
 
-        this.$router.push('/') // 跳转主页
+        const redirect = this.$route.query.redirect || '/'
+
+        this.$router.push(redirect) // 跳转主页
       } catch (err) {
         console.log('提交失败', err)
         this.$toast.success('登录失败')

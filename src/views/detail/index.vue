@@ -212,7 +212,7 @@ export default {
   methods: {
     //
     async onReplyShow (comment) {
-      // 将子组件中传给我评论对象存储到当前组件
+      // 将子组件中传给我的评论对象存储到当前组件
       this.currentComment = comment
 
       // 展示评论回复弹层
