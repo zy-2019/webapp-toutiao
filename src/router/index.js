@@ -63,8 +63,14 @@ const routes = [
     path: '/my-article/:type?', // ？是第二段路径可有可无
     component: () => import ('../views/user-articles'),
     props: true
-  }
+  },
 
+  // 小智机器人
+  {
+    path: '/chat',
+    name: 'chat',
+    component: () => import ('../views/chat')
+  }
   // {
   //   path: '/my-article/collect',
   //   component: () => import ('../views/user-articles')
