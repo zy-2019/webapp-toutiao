@@ -75,9 +75,13 @@ export default {
   },
 
   watch: {
-    // 当消息发生变化 持久化存储到本地存储中
+    // 当消息发生变化 持久化存储到本地存储中  watch好用
     messages (newValue) {
       setItem('chat-messages', newValue)
+
+      this.$nextTick(() => {
+        this.toBottom()
+      })
     }
   },
   methods: {
@@ -100,7 +104,13 @@ export default {
       this.messages.push(data)
       // 清空文本框
       this.message = ''
+    },
+    toBottom () {
+      // 让列表滚动到最底部
+      const messsgeList = this.$refs['message-list']
+      messsgeList.scrollTop = messsgeList.scrollHeight
     }
+
   }
 }
 </script>
