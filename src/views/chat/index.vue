@@ -13,9 +13,9 @@
     <div class="message-list" ref="message-list">
       <div
         class="message-item"
-        :class="{ reverse: item % 3 === 0 }"
-        v-for="item in 20"
-        :key="item"
+        :class="{ reverse: item.isMe  }"
+        v-for="(item,index) in messages"
+        :key="index"
       >
         <van-image
           class="avatar"
@@ -26,7 +26,7 @@
           src="https://img.yzcdn.cn/vant/cat.jpeg"
         />
         <div class="title">
-          <span>{{ `hello${item}` }}</span>
+          <span>{{ item.msg }}</span>
         </div>
       </div>
     </div>
@@ -48,7 +48,8 @@ export default {
   data () {
     return {
       message: '',
-      socket: null // WebSocket 通信对象
+      socket: null, // WebSocket 通信对象
+      messages: [] // 存储所有的消息列表
     }
   },
 
@@ -66,11 +67,9 @@ export default {
       // 建立连接成功
     })
 
-    // 发送消息
-
     // 接收消息
-    socket.on('message', message => {
-      console.log('收到服务器消息：', message)
+    socket.on('message', data => {
+      this.messages.push(data)
     })
   },
   methods: {
@@ -81,11 +80,16 @@ export default {
       }
 
       // 发送消息  包括消息类型 和 数据格式
-      this.socket.emit('message', {
+      const data = {
         msg: message,
-        timestamp: Date.now()
-      })
+        timestamp: Date.now(),
+        isMe: true // 表示是我发的消息
+      }
+      // 发送消息
+      this.socket.emit('message', data)
 
+      // 把消息存储到列表中
+      this.messages.push(data)
       // 清空文本框
       this.message = ''
     }
