@@ -35,7 +35,7 @@
     <!-- 发送消息 -->
     <van-cell-group class="send-message">
       <van-field v-model="message" center clearable>
-        <van-button slot="button" size="small" type="primary">发送</van-button>
+        <van-button slot="button" size="small" type="primary" @click="onSendMessage">发送</van-button>
       </van-field>
     </van-cell-group>
     <!-- /发送消息 -->
@@ -47,7 +47,8 @@ import io from 'socket.io-client'
 export default {
   data () {
     return {
-      message: ''
+      message: '',
+      socket: null // WebSocket 通信对象
     }
   },
 
@@ -57,13 +58,37 @@ export default {
   created () {
     // 建立连接
     const socket = io('http://ttapi.research.itcast.cn')
+
+    // 把 socket 存储到 data 中，然后就可以在 methods 中访问到了
+    this.socket = socket
     // 当客户端与服务器建立连接成功，触发 connect 事件
     socket.on('connect', () => {
+      // 建立连接成功
+    })
 
+    // 发送消息
+
+    // 接收消息
+    socket.on('message', message => {
+      console.log('收到服务器消息：', message)
     })
   },
   methods: {
+    onSendMessage () {
+      const message = this.message.trim()
+      if (!message) {
+        return
+      }
 
+      // 发送消息  包括消息类型 和 数据格式
+      this.socket.emit('message', {
+        msg: message,
+        timestamp: Date.now()
+      })
+
+      // 清空文本框
+      this.message = ''
+    }
   }
 }
 </script>
