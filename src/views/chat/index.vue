@@ -44,12 +44,13 @@
 
 <script>
 import io from 'socket.io-client'
+import { setItem, getItem } from '../../utils/storage'
 export default {
   data () {
     return {
       message: '',
       socket: null, // WebSocket 通信对象
-      messages: [] // 存储所有的消息列表
+      messages: getItem('chat-messages') || [] // 存储所有的消息列表
     }
   },
 
@@ -71,6 +72,13 @@ export default {
     socket.on('message', data => {
       this.messages.push(data)
     })
+  },
+
+  watch: {
+    // 当消息发生变化 持久化存储到本地存储中
+    messages (newValue) {
+      setItem('chat-messages', newValue)
+    }
   },
   methods: {
     onSendMessage () {
