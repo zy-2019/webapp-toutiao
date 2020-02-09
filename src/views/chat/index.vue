@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import io from 'socket.io-client'
 export default {
   data () {
     return {
@@ -52,6 +53,17 @@ export default {
 
   mounted () {
     window.list = this.$refs['message-list']
+  },
+  created () {
+    // 建立连接
+    const socket = io('http://ttapi.research.itcast.cn')
+    // 当客户端与服务器建立连接成功，触发 connect 事件
+    socket.on('connect', () => {
+
+    })
+  },
+  methods: {
+
   }
 }
 </script>
